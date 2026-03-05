@@ -1,0 +1,28 @@
+{
+  "name": "asyncronous_nature_of_node_typescript",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Glax3max/Asyncronous_Nature_of_Node#readme",
+  "bugs": {
+    "url": "https://github.com/Glax3max/Asyncronous_Nature_of_Node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Glax3max/Asyncronous_Nature_of_Node.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"ts-node index.ts"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.0",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.9.3"
+  }
+}
