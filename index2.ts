@@ -31,8 +31,8 @@ async function customePromiseAny<T>(promises:(Promise<T>|T)[]):Promise<T> {
 }
 
 const promise01 = async ()=>({id:1,value:"Promise1"});
-const promise02 = async ()=>(new Error("Error2"));
-const promise03 = async ()=>(new Error("Error3"));
+const promise02 = async ()=>{throw new Error("Error2")};
+const promise03 = async ()=>{throw new Error("Error3")};
 
 customePromiseAny([promise01(),promise02(),promise03()]).then((val)=> {
     console.log(val);
