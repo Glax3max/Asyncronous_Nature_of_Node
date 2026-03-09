@@ -1,3 +1,4 @@
+// custome promise.all implementation 
 async function customePromiseAll5<T>(promises:(Promise<T> | T)[]):Promise<T[]> {
     return new Promise((resolve,reject)=> {
       const results:T[] = [];
