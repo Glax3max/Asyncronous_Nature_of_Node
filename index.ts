@@ -1,10 +1,10 @@
-async function customePromiseAll5<T>(promises:Promise<T>[]):Promise<T[]> {
+async function customePromiseAll5<T>(promises:(Promise<T> | T)[]):Promise<T[]> {
     return new Promise((resolve,reject)=> {
       const results:T[] = [];
       let completedPromise = 0;
 
       promises.forEach((promise,index)=> {
-        promise.then((data)=> {
+        Promise.resolve(promise).then((data)=> {
           results[index] = data;
           completedPromise++;
 
