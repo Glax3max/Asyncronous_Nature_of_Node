@@ -13,7 +13,10 @@ export class Employee{
         console.log('====================================');
     }
     
-    // Methods
+
+    /** 
+     * Incremental Salary method
+    */
     increaseSalary(percent:number) {
         if(percent < 0) {
             console.log('====================================');
@@ -27,6 +30,10 @@ export class Employee{
         console.log('====================================');
     }
 
+    /**
+     * Showing the detail of the Employee
+     */
+
     dispalyDetails() {
         console.log('====================================');
         console.log(`Employee id:${this.id}`);
@@ -35,5 +42,12 @@ export class Employee{
         console.log('====================================');        
     }
 
+    /**
+     * Getting the Annual salary
+     */
+
+    get annualSalary() {
+        return this.salary*12;
+    }
 
 }
