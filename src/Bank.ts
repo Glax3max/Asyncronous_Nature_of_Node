@@ -1,3 +1,4 @@
+// use {ts-node src/Bank} in the terminal from the asyncronous_nature... directory
 export class BankAccount{
     private accountNumber:number;
     private ownerName:string;
@@ -40,7 +41,7 @@ export class BankAccount{
 }
 
 
-const Bank1 = new BankAccount(777,"Raj Shah",0)
-Bank1.checkBalance()
-Bank1.deposit(43)
-Bank1.withdraw(22)
+// const Bank1 = new BankAccount(777,"Raj Shah",0)
+// Bank1.checkBalance()
+// Bank1.deposit(43)
+// Bank1.withdraw(22)
