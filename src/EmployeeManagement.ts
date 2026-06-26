@@ -23,7 +23,7 @@ export class Employee{
         }
         this.salary  += (percent/100)*this.salary;
         console.log('====================================');
-        console.log(`Congratulations 🥳🥳 your new salary is ${this.salary}`);
+        console.log(`Congratulations 🥳 🥳  your new salary is ₹${this.salary}`);
         console.log('====================================');
     }
 
@@ -31,7 +31,7 @@ export class Employee{
         console.log('====================================');
         console.log(`Employee id:${this.id}`);
         console.log(`Employee Name:${this.name}`);
-        console.log(`Employee Salary:${this.salary}`);
+        console.log(`Employee Salary:₹${this.salary}`);
         console.log('====================================');        
     }
 
