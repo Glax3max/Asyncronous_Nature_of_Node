@@ -4,7 +4,7 @@ export class Employee{
     private name:string;
     private salary:number;
 
-    constructor(name,id,salary){
+    constructor(name:string,id:string,salary:number){
         this.id = id;
         this.salary = salary;
         this.name = name;
