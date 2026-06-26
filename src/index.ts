@@ -26,5 +26,5 @@ Calc.clear();
 // Employee Manangement
 
 const Emp1 = new Employee("Abhishek","798",78878)
-Emp1.dispalyDetails()
+Emp1.displayDetails()
 Emp1.increaseSalary(10)

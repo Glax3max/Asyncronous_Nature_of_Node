@@ -1,45 +1,43 @@
 export class Employee{
-    // properies
-    private readonly id:string;
-    private name:string;
-    private salary:number;
-
-    constructor(name:string,id:string,salary:number){
-        this.id = id;
-        this.salary = salary;
-        this.name = name;
-        console.log('====================================');
+    constructor(
+        private readonly id:string,
+        private name:string,
+        private salary:number
+    ){
         console.log(`Welcome onboard on HRM ${name}`);
-        console.log('====================================');
     }
     
+
+    /**
+     * Just a clean code thing 
+     */
+    private lineSeperate() {
+        console.log('====================================');
+    }
 
     /** 
      * Incremental Salary method
     */
-    increaseSalary(percent:number) {
-        if(percent < 0) {
-            console.log('====================================');
-            console.log("Enter a valid percent value");
-            console.log('====================================');
-            return;
+    increaseSalary(percentage:number) {
+        if(percentage <= 0) {
+            throw new Error("Percentage must be greater than zero")
         }
-        this.salary  += (percent/100)*this.salary;
-        console.log('====================================');
+        this.salary  += Math.floor((percentage/100)*this.salary);
+        this.lineSeperate();
         console.log(`Congratulations 🥳 🥳  your new salary is ₹${this.salary}`);
-        console.log('====================================');
+        this.lineSeperate();
     }
 
     /**
      * Showing the detail of the Employee
      */
 
-    dispalyDetails() {
-        console.log('====================================');
+    displayDetails() {
+        this.lineSeperate();
         console.log(`Employee id:${this.id}`);
         console.log(`Employee Name:${this.name}`);
         console.log(`Employee Salary:₹${this.salary}`);
-        console.log('====================================');        
+        this.lineSeperate();
     }
 
     /**
