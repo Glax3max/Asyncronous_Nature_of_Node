@@ -16,7 +16,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-   "dev": "tsx src/index.ts"
+   "dev": "tsx Decorator/playGround.ts"
   },
   "dependencies": {
     "@types/express": "^5.0.6",
