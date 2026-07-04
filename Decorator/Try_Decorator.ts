@@ -15,13 +15,24 @@ export function sayHello(constructor:Function) {
  * Creating a decorator for logs when any service or controller is created
  */
 
-export function LogCreation<T extends new (...args:any[])=> any>(
+// export function LogCreation<T extends new (...args:any[])=> any>(
+//     constructor:T
+// ) {
+//     return class extends constructor {
+//         constructor(...args:any[]) {
+//             console.log(`${constructor.name} Created`);
+//             super(...args);
+//         }
+//     };
+// }
+
+export function LogCreation<T extends new (...args:any[])=>any>(
     constructor:T
-) {
-    return class extends constructor {
+){
+    return class extends constructor{
         constructor(...args:any[]) {
-            console.log(`${constructor.name} Created`);
-            super(...args);
+            console.log(`${constructor.name}`)
+            super(...args)
         }
-    };
+    }
 }
