@@ -1,9 +1,19 @@
+interface personData {
+    id:number;
+    name1:string;
+    age:number;
+    email:string
+}
+
+interface employeeData{
+    employeeId:number;
+    department:string;
+    salary:number;
+    joiningDate:Date;
+}
 class Person{
     constructor(
-        public readonly id:number,
-        public name1:string,
-        public age:number,
-        public readonly email:string
+        protected person:personData
     ) {}
 
     /**
@@ -13,46 +23,40 @@ class Person{
         console.log('====================================');
         console.log("Person Details");
         console.log('====================================');
-        console.log(`ID : ${this.id}`)
-        console.log(`Name : ${this.name1}`)
-        console.log(`Age : ${this.age}`)
-        console.log(`Email : ${this.email}`)
+        console.log(`ID : ${this.person.id}`)
+        console.log(`Name : ${this.person.name1}`)
+        console.log(`Age : ${this.person.age}`)
+        console.log(`Email : ${this.person.email}`)
     }
     /**
      * Increments the age on every birthday
      */
     celebratebirthday() {
-        let age = this.age
-        this.age = age+1;   
+        let age = this.person.age
+        this.person.age = age+1;   
     }
 }
 
 class Employee extends Person{
     constructor(
-        id:number,
-        name1:string,
-        age:number,
-        email:string,
-        public readonly employeeId:number,
-        public department:string,
-        public salary:number,
-        public joiningDate:Date
+        person:personData,
+        protected employee:employeeData
     ){
-        super(id,name1,age,email)
+        super(person)
     }
     /**
      * Increment Salary method
      */
     increaseSalary(percent:number) {
-        let sal = this.salary;
-        this.salary = sal + (sal*percent)/100;
+        let sal = this.employee.salary;
+        this.employee.salary = sal + (sal*percent)/100;
     }
 
     /**
      * Annual Salary
      */
     get annualSalary() {
-        return this.salary*12;
+        return this.employee.salary*12;
     }
 
     /**
@@ -60,10 +64,10 @@ class Employee extends Person{
      */
     displayInfo() {
         super.displayInfo()
-        console.log(`EmployeeId : ${this.employeeId}`)
-        console.log(`Department : ${this.department}`)
-        console.log(`Salary : ${this.salary}`)
-        console.log(`JoiningDate : ${this.joiningDate}`)
+        console.log(`EmployeeId : ${this.employee.employeeId}`)
+        console.log(`Department : ${this.employee.department}`)
+        console.log(`Salary : ${this.employee.salary}`)
+        console.log(`JoiningDate : ${this.employee.joiningDate}`)
     }
 
 }
@@ -71,19 +75,13 @@ class Employee extends Person{
 
 class Developer extends Employee {
     constructor(
-        id:number,
-        name1:string,
-        age:number,
-        email:string,
-        employeeId:number,
-        department:string,
-        salary:number,
-        joiningDate:Date,
+        person:personData,
+        employee:employeeData,
         public programmingLanguages:string[],
         public experienceYears:number,
         public level:number
     ){
-        super(id,name1,age,email,employeeId,department,salary,joiningDate);
+        super(person,employee);
     }
 
     /**
@@ -126,18 +124,12 @@ class Developer extends Employee {
 
 class Manager extends Employee {
     constructor(
-        id:number,
-        name1:string,
-        age:number,
-        email:string,
-        employeeId:number,
-        department:string,
-        salary:number,
-        joiningDate:Date,
+        person:personData,
+        employee:employeeData,
         public teamMembers:Employee[],
         public bonus:number
     ){
-        super(id,name1,age,email,employeeId,department,salary,joiningDate);
+        super(person,employee);
     }
     /**
      * Adding employee
@@ -187,14 +179,11 @@ class Manager extends Employee {
 
 class Contractor extends Person {
     constructor(
-        id:number,
-        name1:string,
-        age:number,
-        email:string,
+        person:personData,
         public hourlyRate:number,
         public hourWorked:number,
     ){
-        super(id,name1,age,email);
+        super(person);
     }
 
     /**
@@ -219,5 +208,5 @@ function printPersonInfo(person:Person) {
     person.displayInfo();
 }
 
-const developer = new Developer(12,"Abhishek",23,"abhishekspps825406@gmail.com",23,"Engineering",57798984,new Date(12-4-2026),['C++','Typescript'],2,2)
+const developer = new Developer({id:12,name1:"Abhishek",age:23,email:"abhishekspps825406@gmail.com"},{employeeId:23,department:"Engineering",salary:57798984,joiningDate:new Date("12-4-2026")},['C++','Typescript'],2,2)
 printPersonInfo(developer)
