@@ -12,17 +12,22 @@ enum PaymentStatus{
 }
 interface PaymentDetail {
     amount:number;
-    transactionId:number;
+    transactionId:string;
     date:Date;
     status:PaymentStatus
 }
 
-function generateRandon10digit():number {
-    const arr :number[]= [1,2,3,4,5,6,7,8,9,0]
-    let num:number = 0
+function generateRandon10digit():string {
+    const arr :string[]= ["1","2","3","4","5","6","7","8","9","0"]
+    let num:string = ""
     for(let i = 0 ; i < 10 ;i++) {
-        num *= 10;
-        num += arr[Math.floor(Math.random()*10)]
+        let char:string = arr[Math.floor(Math.random()*10)];
+        if(i == 0) {
+            while(char === "0") {
+                char = arr[Math.floor(Math.random()*10)];
+            }
+        }
+        num += char; 
     }
     return num;
 }
@@ -47,6 +52,18 @@ abstract class Payment{
     }
 
     /**
+     * 
+     * Payment Operations
+     */
+    pay(amount:number) {
+        this.payment.amount = amount;
+        this.validatePayment();
+        this.payment.transactionId = generateRandon10digit();
+        this.payment.status = PaymentStatus.Done;
+        this.payment.date =new Date();
+    }
+
+    /**
      * validate payment abstract method
      */
     abstract validatePayment():void;
@@ -62,18 +79,6 @@ class UpiPayment
         protected readonly bankName:string
     ) {
         super(payment)
-    }
-
-    /**
-     * paying the money
-     */
-    pay(amount:number):void {
-        this.payment.amount = amount;
-        this.validatePayment();
-        this.payment.transactionId = generateRandon10digit();
-        this.payment.date = new Date()
-        this.payment.status = PaymentStatus.Done
-        console.log("Payment succeed")
     }
 
     /**
@@ -137,18 +142,6 @@ class CreditCardPayment
         }
 
         /**
-         * Payment making
-         */
-        pay(amount:number):void{
-            this.payment.amount = amount
-            this.validatePayment()
-            this.payment.transactionId = generateRandon10digit();
-            this.payment.date = new Date();
-            this.payment.status = PaymentStatus.Done
-            console.log("Payment successfully executed by card")
-        }
-
-        /**
          * Refunding the money
          */
         refund():void{
@@ -180,8 +173,6 @@ class CreditCardPayment
         /**
          * Printing the transaction detail
          */
-
-
         printTransactionDetail():void {
         if(this.payment.status == PaymentStatus.Pending) {
             throw new Error(`Status is not initialed`)
@@ -203,7 +194,7 @@ class CreditCardPayment
 
 const intialPaymentData:PaymentDetail ={
     amount:-1,
-    transactionId:-1,
+    transactionId:"",
     date:new Date(),
     status:PaymentStatus.NotInitialted
 }
