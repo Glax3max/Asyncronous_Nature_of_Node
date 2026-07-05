@@ -1,18 +1,19 @@
 interface PaymentGateway {
     pay(amount:number):void,
-    refund(amount:number):void,
+    refund():void,
     getTrasactionDetails():string
 }
-enum status1{
+enum PaymentStatus{
     Done="Done",
     Pending="Pending",
-    Rejected = "Rejected"
+    Rejected = "Rejected",
+    Refunded = "Refunded"
 }
 interface PaymentDetail {
     amount:number;
     transactionId:number;
     date:Date;
-    status:status1
+    status:PaymentStatus
 }
 
 abstract class Payment{
@@ -41,10 +42,12 @@ abstract class Payment{
 
 }
 
-class upiPayment extends Payment {
+class upiPayment 
+    extends Payment
+    implements PaymentGateway {
     constructor(
         payment:PaymentDetail,
-        protected readonly upiId:number,
+        protected readonly upiId:string,
         protected readonly bankName:string
     ) {
         super(payment)
@@ -53,44 +56,60 @@ class upiPayment extends Payment {
     /**
      * paying the money
      */
-    pay():void {
-        console.log(`PaymentDone to ${this.bankName} bank and ${this.upiId} upiId of an amount of ${this.payment.amount}`);
+    pay(amount:number):void {
+        if(amount <= 0 )
+            throw new Error("Invalid Amount")
+        if(this.bankName == "") 
+            throw new Error("Invalid bank")
+        if(!this.upiId.includes("@"))
+            throw new Error("Invalid upi id")
+
+        this.payment.amount = amount
+        this.payment.status = PaymentStatus.Done
+        console.log("Payment succeed")
     }
 
     /**
      * Making the refund
      */
     refund():void {
-        if(this.payment.status === status1.Done) {
-            console.log(`Payment refunded to ${this.bankName} and ${this.upiId}`);
-        }else{
-            throw new Error("Refund failed because payment never succeeded")
-        }
+        if(this.payment.amount <= 0) 
+            throw new Error("Payment hasn't completed to be refunded")
+        this.payment.status = PaymentStatus.Refunded;
+        console.log("Refund successfully done")
     }
 
     /**
      * validating the payment
      */
     validatePayment():void{
-        if(this.bankName != "" && this.upiId.toString.length > 10 && this.payment.status === status1.Done) {
-            console.log("Payment done successfully");
-        }else {
-            throw new Error("Payment validation failed")
-        }
+        if(this.bankName === "")
+            throw new Error("Not a valid bank")
+        if(!this.upiId.includes("@")) 
+            throw new Error("Not a valid upi Id")
+        if(this.payment.amount <= 0) 
+            throw new Error("Please enter a valid number")
+
+        this.payment.status = PaymentStatus.Done
+        console.log("Payment validated")
     }
 
     /**
      * get transaction detail
      */
-
-    receipt():void {
+    getTrasactionDetails():string {
+        if(this.payment.status == PaymentStatus.Pending) {
+            return `Status is not initialed`
+        }
         super.receipt()
         console.log(`Upi Id : ${this.upiId}`);
         console.log(`Bank Name : ${this.bankName}`);
+        return `Upi Id: ${this.upiId} is used as the transaction destination and the amount is ${this.payment.amount}`
     }
 }
 
 
-const upiPayment1 = new upiPayment({amount:23333,transactionId:453435,date:new Date("12-03-2005"),status:status1.Done},328748723487,"BOI")
+const upiPayment1 = new upiPayment({amount:0,transactionId:453435,date:new Date("12-03-2005"),status:PaymentStatus.Pending},"328748@23487","BOI")
 
-upiPayment1.receipt()
+upiPayment1.pay(485774);
+console.log(upiPayment1.getTrasactionDetails());
