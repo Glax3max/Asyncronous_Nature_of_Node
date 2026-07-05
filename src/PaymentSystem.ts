@@ -1,19 +1,30 @@
 interface PaymentGateway {
     pay(amount:number):void,
     refund():void,
-    getTrasactionDetails():string
+    getTransactionDetails():string
 }
 enum PaymentStatus{
     Done="Done",
     Pending="Pending",
     Rejected = "Rejected",
-    Refunded = "Refunded"
+    Refunded = "Refunded",
+    NotInitialted = "Not Initiated"
 }
 interface PaymentDetail {
     amount:number;
     transactionId:number;
     date:Date;
     status:PaymentStatus
+}
+
+function generateRandon10digit():number {
+    const arr :number[]= [1,2,3,4,5,6,7,8,9,0]
+    let num:number = 0
+    for(let i = 0 ; i < 9 ;i++) {
+        num *= 10;
+        num += arr[Math.floor(Math.random()*10)]
+    }
+    return num;
 }
 
 abstract class Payment{
@@ -42,7 +53,7 @@ abstract class Payment{
 
 }
 
-class upiPayment 
+class UpiPayment 
     extends Payment
     implements PaymentGateway {
     constructor(
@@ -57,14 +68,10 @@ class upiPayment
      * paying the money
      */
     pay(amount:number):void {
-        if(amount <= 0 )
-            throw new Error("Invalid Amount")
-        if(this.bankName == "") 
-            throw new Error("Invalid bank")
-        if(!this.upiId.includes("@"))
-            throw new Error("Invalid upi id")
-
-        this.payment.amount = amount
+        this.payment.amount = amount;
+        this.validatePayment();
+        this.payment.transactionId = generateRandon10digit();
+        this.payment.date = new Date()
         this.payment.status = PaymentStatus.Done
         console.log("Payment succeed")
     }
@@ -73,8 +80,8 @@ class upiPayment
      * Making the refund
      */
     refund():void {
-        if(this.payment.amount <= 0) 
-            throw new Error("Payment hasn't completed to be refunded")
+        if(this.payment.status !== PaymentStatus.Done) 
+            throw new Error("Refund can't be initiated") 
         this.payment.status = PaymentStatus.Refunded;
         console.log("Refund successfully done")
     }
@@ -90,14 +97,13 @@ class upiPayment
         if(this.payment.amount <= 0) 
             throw new Error("Please enter a valid number")
 
-        this.payment.status = PaymentStatus.Done
         console.log("Payment validated")
     }
 
     /**
      * get transaction detail
      */
-    getTrasactionDetails():string {
+    getTransactionDetails():string {
         if(this.payment.status == PaymentStatus.Pending) {
             return `Status is not initialed`
         }
@@ -108,8 +114,14 @@ class upiPayment
     }
 }
 
+const intialPaymentData:PaymentDetail ={
+    amount:-1,
+    transactionId:-1,
+    date:new Date(),
+    status:PaymentStatus.NotInitialted
+}
 
-const upiPayment1 = new upiPayment({amount:0,transactionId:453435,date:new Date("12-03-2005"),status:PaymentStatus.Pending},"328748@23487","BOI")
+const upiPayment1 = new UpiPayment(intialPaymentData,"328748@23487","BOI")
 
 upiPayment1.pay(485774);
-console.log(upiPayment1.getTrasactionDetails());
+console.log(upiPayment1.getTransactionDetails());
