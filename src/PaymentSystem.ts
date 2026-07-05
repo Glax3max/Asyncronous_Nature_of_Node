@@ -20,7 +20,7 @@ interface PaymentDetail {
 function generateRandon10digit():number {
     const arr :number[]= [1,2,3,4,5,6,7,8,9,0]
     let num:number = 0
-    for(let i = 0 ; i < 9 ;i++) {
+    for(let i = 0 ; i < 10 ;i++) {
         num *= 10;
         num += arr[Math.floor(Math.random()*10)]
     }
@@ -101,18 +101,105 @@ class UpiPayment
     }
 
     /**
-     * get transaction detail
+     * Print TransactionalDetail
      */
-    getTransactionDetails():string {
+    printTransactionDetail():void {
         if(this.payment.status == PaymentStatus.Pending) {
-            return `Status is not initialed`
+            throw new Error(`Status is not initialed`)
         }
         super.receipt()
         console.log(`Upi Id : ${this.upiId}`);
         console.log(`Bank Name : ${this.bankName}`);
+    }
+
+    /**
+     * get transaction detail
+     */
+    getTransactionDetails():string {
+        if(this.payment.status == PaymentStatus.NotInitialted) {
+            throw new Error(`Status is not initialed`)
+        }
         return `Upi Id: ${this.upiId} is used as the transaction destination and the amount is ${this.payment.amount}`
     }
 }
+
+class CreditCardPayment
+    extends Payment
+    implements PaymentGateway {
+        constructor(
+            payment:PaymentDetail,
+            private readonly cardNumber:number,
+            private readonly bankName:string,
+            private readonly cvv:number,
+            private readonly pin:number,
+        ){
+            super(payment)
+        }
+
+        /**
+         * Payment making
+         */
+        pay(amount:number):void{
+            this.payment.amount = amount
+            this.validatePayment()
+            this.payment.transactionId = generateRandon10digit();
+            this.payment.date = new Date();
+            this.payment.status = PaymentStatus.Done
+            console.log("Payment successfully executed by card")
+        }
+
+        /**
+         * Refunding the money
+         */
+        refund():void{
+            this.validatePayment()
+            this.payment.status = PaymentStatus.Refunded;
+            this.payment.date = new Date();
+            console.log("Payment refunded")
+        }
+
+        /**
+         * Validating the payment
+         */
+
+        validatePayment():void {
+            if(this.payment.amount <= 0 )
+                throw new Error("Amount should be greater than 0")
+            if(this.cardNumber.toString().length < 12)
+                throw new Error("Card number not valid")
+            if(this.cvv.toString().length != 3)
+                throw new Error("Invalid CVV")
+            if(this.bankName === "")
+                throw new Error("Invalid bank number")
+            if(this.pin.toString().length !=  6)
+                throw new Error("Invalid pin")
+
+            console.log("Payment is validated")
+        }
+
+        /**
+         * Printing the transaction detail
+         */
+
+
+        printTransactionDetail():void {
+        if(this.payment.status == PaymentStatus.Pending) {
+            throw new Error(`Status is not initialed`)
+        }
+        super.receipt()
+        console.log(`Card Number : ${this.cardNumber}`);
+        console.log(`Bank Name : ${this.bankName}`);
+        }
+        /**
+         * Getting the transaction detail
+         */
+        getTransactionDetails():string {
+            if(this.payment.status === PaymentStatus.NotInitialted) {
+                throw new Error("Payment not initiated");
+            }
+            return `Transaction done and this time it is a ${this.payment.status} operation`;
+        }
+    }
 
 const intialPaymentData:PaymentDetail ={
     amount:-1,
@@ -122,6 +209,12 @@ const intialPaymentData:PaymentDetail ={
 }
 
 const upiPayment1 = new UpiPayment(intialPaymentData,"328748@23487","BOI")
+const cardPayment = new CreditCardPayment(intialPaymentData,890764527628,"SBI",874,349294)
 
-upiPayment1.pay(485774);
-console.log(upiPayment1.getTransactionDetails());
+cardPayment.pay(348743);
+cardPayment.refund();
+cardPayment.printTransactionDetail();
+console.log(cardPayment.getTransactionDetails())
+// upiPayment1.pay(485774);
+// upiPayment1.printTransactionDetail();
+// console.log(upiPayment1.getTransactionDetails());
