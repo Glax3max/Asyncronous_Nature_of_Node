@@ -3,26 +3,26 @@ class Container {
      * Creating the map to store the object so that it can be used to inject the dependency ,
      *  rather than creating the object for each class that requires and this map is our warehouse.
      */
-    private services = new Map<string,unknown>();
+    private services = new Map<new (...args:any[])=>unknown,unknown>();
 
     /**
      * Register function
      */
     register<T>(
-        key:string,
+        token:new (...args:any[])=>T,
         service:T
     ):void {
-        this.services.set(key,service);
+        this.services.set(token,service);
     }
 
     /**
      * Resolving function
      */
     resolve<T>(
-        key:string
+        token:new (...args:any[])=>T
     ):T {
         
-        const service = this.services.get(key);
+        const service = this.services.get(token);
         if(!service) {
             throw new Error("Requested service does not exist");
         }
@@ -58,10 +58,10 @@ class UserRepository {
 }
 
 const container = new Container();
-container.register("log",new Logger());
-container.register("config",new ConfigService());
-container.register("db",new Database());
-container.register("repo",new UserRepository());
+container.register(Logger,new Logger());
+container.register(ConfigService,new ConfigService());
+container.register(Database,new Database());
+container.register(UserRepository,new UserRepository());
 
 
 class UserService {
@@ -76,6 +76,6 @@ class UserService {
     }
 }
 
-const userServ = new UserService(container.resolve("log"),container.resolve("repo"));
+const userServ = new UserService(container.resolve(Logger),container.resolve(UserRepository));
 
 userServ.print();
