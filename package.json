@@ -16,13 +16,16 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-   "dev": "tsx Decorator/playGround.ts"
+    "dev": "tsx Decorator/playGround.ts"
   },
   "dependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.0",
+    "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
-    "tsc": "^2.0.4",
-    "typescript": "^5.9.3"
+    "tsc": "^2.0.4"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }
