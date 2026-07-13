@@ -12,6 +12,7 @@ class UserService {
     constructor(
         private logger:Logger
     ){}
+
 }
 
 console.log(
@@ -20,6 +21,10 @@ console.log(
         UserService
     )
 )
+
+
+
+
 // type Constructor<T> = new (...args:any[])=>T;
 
 // class container2{
