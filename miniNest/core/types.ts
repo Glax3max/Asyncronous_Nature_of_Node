@@ -1,6 +1,6 @@
-type constructor<T = unknown> = new (...args:any[])=>T;
-type constructor3<T = unknown> = new (...args:any[])=>T;
-enum RequestMethod {
+type Constructor<T = unknown> = new (...args:any[])=>T;
+
+export enum RequestMethod {
     GET = "GET",
     POST = "POST",
     PUT = "PUT",
@@ -8,4 +8,9 @@ enum RequestMethod {
     DELETE = "DELETE"
 }
 
-console.log(RequestMethod.DELETE)
+export interface RouteDefinition {
+    method: RequestMethod;
+    path: string;
+    controller: Constructor;
+    handler: string;
+}
