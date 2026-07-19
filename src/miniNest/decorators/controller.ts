@@ -17,7 +17,7 @@ function Get(path:string) {
     }
 }
 
-function classDecorator(path:string) {
+function Controller(path:string) {
     return function (
         constructor:Function
     ) {
@@ -29,7 +29,7 @@ function classDecorator(path:string) {
     }
 }
 
-@classDecorator("/path")
+@Controller("/path")
 class UserController{
     @Get("/cars")
     get() {
