@@ -1,4 +1,4 @@
-type Constructor<T = unknown> = new (...args:any[])=>T;
+export type Constructor<T = unknown> = new (...args:any[])=>T;
 
 export enum RequestMethod {
     GET = "GET",
