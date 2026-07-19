@@ -29,12 +29,28 @@ function Controller(path:string) {
     }
 }
 
+
+function callMappingMethod(classDetail:Function):void{
+    const methods = Object.getOwnPropertyNames(classDetail.prototype);
+
+    methods.forEach((method)=> {
+        if(method === "constructor" ) 
+        console.log(Reflect.getMetadata("route",classDetail.prototype,method))
+    })
+
+}
 @Controller("/path")
 class UserController{
     @Get("/cars")
     get() {
-
+        console.log("hello")
+    }
+    
+    @Get("/scar")
+    get2() {
+        console.log("Hello")
     }
 }
 
 
+callMappingMethod(UserController);
