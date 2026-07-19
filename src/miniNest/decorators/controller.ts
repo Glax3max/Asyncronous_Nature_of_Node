@@ -1,3 +1,4 @@
+import { RouteDefinition } from './../core/types';
 import "reflect-metadata";
 function Get(path:string) {
     return function(
@@ -34,8 +35,9 @@ function callMappingMethod(classDetail:Function):void{
     const methods = Object.getOwnPropertyNames(classDetail.prototype);
 
     methods.forEach((method)=> {
-        if(method === "constructor" ) 
-        console.log(Reflect.getMetadata("route",classDetail.prototype,method))
+        if(method != "constructor" ) {
+            console.log(Reflect.getMetadata("route",classDetail.prototype,method))
+        } 
     })
 
 }
@@ -53,4 +55,27 @@ class UserController{
 }
 
 
-callMappingMethod(UserController);
+// callMappingMethod(UserController);
+
+/**
+ * Bootstraping the userController
+ */
+function bootStrap(userCon:Function) {
+    const baseUrl = Reflect.getMetadata("basePath",userCon);
+    const methods = Object.getOwnPropertyNames(userCon.prototype);
+    const RouteDefinition:RouteDefinition[] = [];
+    for(const method of methods) {
+        if(method === "constructor") continue;
+        const methodObj = Reflect.getMetadata("route",userCon.prototype,method)
+        const url = baseUrl + methodObj.path;
+        const routeObj:RouteDefinition = {
+            method:methodObj.method,
+            path:url,
+            controller:userCon,
+            handler:method
+        } 
+        console.log(`Path: ${url}   method:${methodObj.method}`)
+    }
+}
+
+bootStrap(UserController);
