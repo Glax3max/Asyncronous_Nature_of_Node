@@ -1,16 +1,40 @@
-
-function controller(path:string) {
-    console.log("Hello")
-    return function (
-        constructor:Function
+import "reflect-metadata";
+function Get(path:string) {
+    return function(
+        target:any,
+        propertyKey:string,
+        descriptor:PropertyDescriptor
     ) {
-        console.log(`Constructor : ${constructor}`)
+        Reflect.defineMetadata(
+         "route",
+         {
+            method:"GET",
+            path
+         },
+          target,
+          propertyKey
+        )
     }
 }
 
-@controller("/path")
+function classDecorator(path:string) {
+    return function (
+        constructor:Function
+    ) {
+        Reflect.defineMetadata(
+            "basePath",
+            path,
+            constructor,
+        )
+    }
+}
+
+@classDecorator("/path")
 class UserController{
+    @Get("/cars")
     get() {
 
     }
 }
+
+
