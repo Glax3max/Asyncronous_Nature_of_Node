@@ -86,9 +86,7 @@ bootStrap(UserController);
 class Application{
 
     private routes:RouteDefinition[] = [];
-    callmappingmethod() {
-        callMappingMethod(UserController)
-    }
+
     bootstrap():void{
         this.routes = bootStrap(UserController)
     }
