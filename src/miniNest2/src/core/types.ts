@@ -1,3 +1,4 @@
+
 /**
  * Constructor type its basically a type for the class that we will be passing to the container for registry and retrival
  */
@@ -43,4 +44,8 @@ export interface RouteDefinition {
 export interface ControllerMetadata {
     readonly basePath:string;
 }
+
+
+
+
 
