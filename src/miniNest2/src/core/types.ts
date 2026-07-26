@@ -4,7 +4,12 @@
  */
 export type Constructor<T = unknown> =  new (...args:any[])=>T;
 
-
+export interface CreateRouteDefinitionOptions {
+    controller: Constructor;
+    handler: string;
+    controllerMetadata: ControllerMetadata;
+    routeMetadata: RouteMetadata;
+}
 /**
  * Making the Possible request method , so that these are the only methods that can be used
  */

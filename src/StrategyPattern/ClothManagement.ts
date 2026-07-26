@@ -101,4 +101,3 @@ clothManagement.changeStrategy(new HumanHelp())
 clothManagement.dryCloths("Sun")
 clothManagement.ironCloths("Hot water in the utensil")
 clothManagement.washCloths("Human was")
-
